@@ -4,7 +4,7 @@ const router = express.Router();
 const actionDb = require('../helpers/actionModel')
 
 
-router.post('/', (req, res) => {
+router.post('/', verifyAction, (req, res) => {
   actionDb.insert(req.body)
     .then(action => {
       res.status(200).json(action)
@@ -26,7 +26,7 @@ router.get('/', (req, res) => {
     })
 })
 
-router.get('/:id', (req, res) => {
+router.get('/:id', verifyActionId, (req, res) => {
   actionDb.get(req.params.id)
     .then(action => {
       res.status(200).json(action)
@@ -37,7 +37,7 @@ router.get('/:id', (req, res) => {
     })
 })
 
-router.put('/:id', (req, res) => {
+router.put('/:id', verifyAction, verifyActionId, (req, res) => {
   actionDb.update(req.params.id, req.body)
     .then(action => {
       res.status(200).json(action)
@@ -48,7 +48,7 @@ router.put('/:id', (req, res) => {
     })
 })
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', verifyActionId, (req, res) => {
   actionDb.remove(req.params.id)
     .then(action => {
       res.status(200).json({message: `action ${req.params.id} has been deleted`})
@@ -59,6 +59,26 @@ router.delete('/:id', (req, res) => {
     })
 })
 
+//@@@@@@@@@@@@@@@@ MIDDLEWARE @@@@@@@@@@@@@@@@@@
+
+function verifyAction(req, res, next) {
+  if (!req.body.project_id || !req.body.description || !req.body.notes) {
+    res.status(404).json({message: "you are missing one or multiple of: project_id, description, and notes"})
+  } else {
+    next()
+  }
+}
+
+function verifyActionId(req, res, next) {
+  actionDb.get(req.params.id)
+    .then(action => {
+      if (action) {
+        next();
+      } else {
+        res.status(404).json({message: `action ${req.params.id} does not exist `})
+      }
+    })
+}
 
 
 module.exports = router;
