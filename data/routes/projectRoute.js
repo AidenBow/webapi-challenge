@@ -36,6 +36,17 @@ router.get('/:id', verifyPostId, (req, res) => {
     })
 })
 
+router.get('/:id/actions', verifyPostId, (req, res) => {
+  projectDb.getProjectActions(req.params.id)
+    .then(actions => {
+      res.status(200).json(actions)
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(500).json({message: "server error"})
+    })
+})
+
 router.put('/:id', verifyPostId, (req, res) => {
   projectDb.update(req.params.id, req.body)
     .then(project => {
