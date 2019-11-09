@@ -26,13 +26,23 @@ Demonstrate your understanding of this Sprint's concepts by answering the follow
 
 - [ ] Mention two parts of Express that you learned about this week.
 
+Express can .use to run middleware, and .route to create compartmental endpoints
+
 - [ ] Describe Middleware?
+
+A middleware is code that is ran before the main action/response/code is ran
 
 - [ ] Describe a Resource?
 
+resources hold code you can reference
+
 - [ ] What can the API return to help clients know if a request was successful?
 
+the API can return status codes that indicate the success
+
 - [ ] How can we partition our application into sub-applications?
+
+we can create seperate routes and db's and link them back to the main server file with server.use
 
 ## Project Setup
 
