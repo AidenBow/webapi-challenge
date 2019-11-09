@@ -74,7 +74,10 @@ function verifyAction(req, res, next) {
         res.status(404).json({message: `post ${req.body.project_id} does not exist `})
       }
     })
-      
+    .catch(err => {
+      console.log(err)
+      res.status(500).json({message: "server error inside verifyAction"})
+    }) 
   }
 }
 
