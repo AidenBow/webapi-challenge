@@ -62,10 +62,19 @@ router.delete('/:id', verifyActionId, (req, res) => {
 //@@@@@@@@@@@@@@@@ MIDDLEWARE @@@@@@@@@@@@@@@@@@
 
 function verifyAction(req, res, next) {
+
   if (!req.body.project_id || !req.body.description || !req.body.notes) {
     res.status(404).json({message: "you are missing one or multiple of: project_id, description, and notes"})
   } else {
-    next()
+    actionDb.get(req.body.project_id)
+    .then(post => {
+      if (post) {
+        next();
+      } else {
+        res.status(404).json({message: `post ${req.body.project_id} does not exist `})
+      }
+    })
+      
   }
 }
 
